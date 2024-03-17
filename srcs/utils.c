@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:28:24 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/12 17:46:38 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/16 23:41:23 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,3 +64,23 @@ long	ft_atol(char *str)
 	}
 	return (a);
 }
+
+unsigned int my_time()
+{
+	struct timeval time;
+	long long int cur_time;
+	
+	gettimeofday(&time, NULL);
+	cur_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	return(cur_time);
+}
+
+void my_sleep(unsigned int time, int action_time, t_philo *philo)
+{
+	printf("%p\n", philo);
+	while(my_time() < time + action_time)
+	{
+		continue ;
+	}
+}
+	
