@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:33:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/17 10:32:51 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:09:02 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,18 @@
 
 void routine(t_philo *philo)
 {
-	while(1)
+	while(!dinner()->finish)
 	{
-		if(dinner()->finish)
-			return ;
 		//if((philo->id) % 2 != 0)
 			//usleep(2/1000);
 		if(pick_up_forks(philo))
 		{
-			if(dinner()->finish)
-				return ;
 			eat(philo);
-			if(dinner()->finish)
-				return ;
 			put_down_forks(philo);
-			if(dinner()->finish)
-				return ;
 			sleeping(philo->id);
-			if(dinner()->finish)
-				return ;
 			think(philo->id);
-			if (dinner()->finish)
-				return ;
+			if(died(philo->id))
+				break ;
 		}
 		else
 			put_down_forks(philo);

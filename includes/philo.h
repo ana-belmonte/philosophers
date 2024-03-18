@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 21:16:34 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/16 23:29:41 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/18 22:10:06 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ void eat(t_philo *philo);
 int pick_up_forks(t_philo *philo);
 void sleeping(int id);
 void put_down_forks(t_philo *philo);
-bool check_deaths(t_philo *philo);
+bool check_deaths();
+
+bool died(int id);
 
 /// UTILS
 
