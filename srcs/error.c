@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:11:21 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/16 23:32:14 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/23 18:46:34 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include <philo.h>
 
 static int ft_strlen(char *str)
 {
@@ -38,6 +38,8 @@ void free_mutexes(t_fork *forks)
 		i++;
 	}
 	pthread_mutex_destroy(&dinner()->global);
+	//pthread_mutex_destroy(&dinner()->m_fin);
+	pthread_mutex_destroy(&dinner()->prints);
 }
 
 void free_all()

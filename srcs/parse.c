@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 16:03:49 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/14 16:22:27 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:30:01 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include <philo.h>
 
 bool	parse_info(char **av)
 {

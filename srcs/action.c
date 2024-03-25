@@ -3,151 +3,122 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:08:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/18 22:08:44 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:24:24 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include <philo.h>
+
+void print(char *s, int id)
+{
+	pthread_mutex_lock(&dinner()->prints);
+	printf("%u %d %s\n", (my_time() - dinner()->start_time), id, s);
+	pthread_mutex_unlock(&dinner()->prints);
+}
 
 void think(int id)
 {
-	printf("%u Philosopher number %d is thinking\n",(my_time() - dinner()->cur_time), id);
+	if(!getter(&dinner()->finish, 1, &dinner()->global))
+	{
+		print("is thinking", id);
+	}
 }
+
 
 int pick_up_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->left->in_use);
-	if (!philo->left->picked)	
+	if(!getter(&dinner()->finish, 1, &dinner()->global))
 	{
-		philo->left->picked = 1;
-		printf("%u Philosopher number %d picked up fork\n", (my_time() - dinner()->cur_time), philo->id);
-		pthread_mutex_unlock(&philo->left->in_use);
-		pthread_mutex_lock(&philo->right->in_use);
-		if (!philo->right->picked) 
+		if (!getter(&philo->left->picked, 1, &philo->left->in_use) && !getter(&dinner()->finish, 1, &dinner()->global))	
 		{
-			philo->right->picked = 1;
-			printf("%u Philosopher number %d picked up fork\n", (my_time() - dinner()->cur_time), philo->id);
-			pthread_mutex_unlock(&philo->right->in_use);
-			return (1);
-			
+			print("has taken a fork", philo->id);
+			setter(&philo->left->picked, 1, &philo->left->in_use);
 		}
-		else
-			pthread_mutex_unlock(&philo->right->in_use);
+		if (!getter(&philo->right->picked, 1, &philo->right->in_use) && !getter(&dinner()->finish, 1, &dinner()->global)) 
+		{
+			setter(&philo->right->picked, 1, &philo->right->in_use);
+			print("has taken a fork", philo->id);
+			return (1);
+		}
 	}
-	else
-		pthread_mutex_unlock(&philo->left->in_use);
 	return(0);
 }
 
-void eat(t_philo *philo)
+int eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->left->in_use);
-	if(philo->left->picked)
+
+	int a = 0;
+	if(!getter(&dinner()->finish, 1, &dinner()->global))
 	{
-		pthread_mutex_unlock(&philo->left->in_use);
-		pthread_mutex_lock(&philo->right->in_use);
-		if(philo->right->picked)
+		if(getter(&philo->left->picked, 1, &philo->left->in_use))
 		{
-			philo->n_eats++;
-			printf("%u Philosopher number %d is eating \n", (my_time() - dinner()->cur_time), philo->id);
-			philo->last_time_eaten = my_time();
-			my_sleep(my_time(), dinner()->eat_time, philo);
-			pthread_mutex_unlock(&philo->right->in_use);
+			if(getter(&philo->right->picked, 1, &philo->right->in_use) && !getter(&dinner()->finish, 1, &dinner()->global))
+			{
+				setter(&philo->n_eats, (philo->n_eats + 1), &dinner()->global);
+				print("is eating", philo->id);
+				a = my_time();
+				setter(&philo->last_time_eaten , 
+					getter(&a, 2, &dinner()->global), &dinner()->global);
+				my_sleep(my_time(), dinner()->eat_time);
+				return(1);
+			}
 		}
-		else
-			pthread_mutex_unlock(&philo->right->in_use);
 	}
-	else
-		pthread_mutex_unlock(&philo->left->in_use);
+	return(0);
 }
 
 void put_down_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->right->in_use);
-	philo->right->picked = 0;	
-	pthread_mutex_unlock(&philo->right->in_use);
-	pthread_mutex_lock(&philo->left->in_use);
-	philo->left->picked = 0;
-	pthread_mutex_unlock(&philo->left->in_use);
+	if(philo->id % 2 == 0)
+	{
+		setter(&philo->left->picked, 0,  &philo->left->in_use);
+		setter(&philo->right->picked, 0,  &philo->right->in_use);
+	}
+	else
+	{
+		setter(&philo->right->picked, 0,  &philo->right->in_use);
+		setter(&philo->left->picked, 0,  &philo->left->in_use);
+	}
 }
 
 void sleeping(int id)
 {
-	printf("%u Philosopher number %d is sleeping \n", (my_time() - dinner()->cur_time), id);
-	my_sleep(my_time(), dinner()->sleep_time, &dinner()->philos[id -1]);
-}
-
-bool died(int id)
-{
-	
-	pthread_mutex_lock(&dinner()->global);
-	if (my_time() - dinner()->philos[id - 1].last_time_eaten >= dinner()->die_time)
-    {
-        dinner()->finish = 1; // Set finish to 1
-        printf("%u Philosopher %d has died\n",(my_time() - dinner()->cur_time), dinner()->philos[id - 1].id);
-		pthread_mutex_unlock(&dinner()->global);
-		return(true);
-    }
-	else
-		pthread_mutex_unlock(&dinner()->global);
-	return(false);
-}
-/*int get_n_eats(t_philo *philo)
-{
-	pthread_mutex_lock(&dinner()->global);
-	if (dinner()->n_eats == philo->n_eats)
+	if(!getter(&dinner()->finish, 1, &dinner()->global))
 	{
-		pthread_mutex_unlock(&dinner()->global);
-		return(1);
-	}
-	else 
-	{
-		pthread_mutex_unlock(&dinner()->global);
-		return(0);
+		if(!getter(&dinner()->finish, 1, &dinner()->global))
+			print("is sleeping", id);
+		my_sleep(my_time(), dinner()->sleep_time);
 	}
 }
 
-int get_finish()
-{
-	int a ;
-	
-	pthread_mutex_lock(&dinner()->global);
-	a = dinner()->finish ;
-	pthread_mutex_unlock(&dinner()->global);
-	return(a);
-}
 
-int get_time_dif(t_philo *philo)
+void check_stop(t_data *data)
 {
-	unsigned int time; 
-	pthread_mutex_lock(&dinner()->global);
-	time = (my_time() - philo->last_time_eaten);
-	pthread_mutex_unlock(&dinner()->global);
-	return(time);
-}
+	int i;
 
-bool	check_deaths()
-{
-	int i ;
 	i = 0;
-	while (!get_finish()) 
+	while(1)
 	{
-		while(i < dinner()->n_philos)
+		i = 0;
+		while(i < data->n_philos)
 		{
-			if(get_time_dif(&dinner()->philos[i]) == dinner()->die_time || get_n_eats(&dinner()->philos[i]))
+			if((int)get_time() - getter(&data->philos[i].last_time_eaten, 2, &dinner()->global) >= getter(&data->die_time, 2, &dinner()->global) 
+				|| getter(&data->philos[i].n_eats, 1, &dinner()->global) >= getter(&data->n_eats, 1, &dinner()->global))
 			{
-				pthread_mutex_lock(&dinner()->global);
-				dinner()->finish = 1;
-				pthread_mutex_unlock(&dinner()->global);
-				printf("%u Philosopher number %d is dead \n", (my_time() - dinner()->cur_time), dinner()->philos[i].id);
-				return(true) ;
+				// printf("dif : %d\n", (int)get_time() - getter(&data->philos[i].last_time_eaten, 2, &dinner()->global));
+				// printf("die time: %u\n", data->die_time);
+				// printf("last time eaten: %u\n", data->philos[i].last_time_eaten);
+				// printf("n eats philo: %i\n", data->philos[i].n_eats);
+				// printf("n eats all: %i\n", data->n_eats);
+				setter(&dinner()->finish, 1, &dinner()->global);
+				print("has died", data->philos[i].id);
+				return ; 
 			}
-			i++;
+			usleep(100);
 		}
-		usleep(1000);
 	}
-	return(true);
-}*/
+}
+

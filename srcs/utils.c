@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:28:24 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/18 21:58:10 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 14:44:02 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include <philo.h>
 
 static int	ft_isdigit(char *str)
 {
@@ -75,12 +75,43 @@ unsigned int my_time()
 	return(cur_time);
 }
 
-void my_sleep(unsigned int time, int action_time, t_philo *philo)
+unsigned int get_time()
 {
-	printf("%p\n", philo);
-	while(my_time() < time + action_time)
+	int a ;
+	pthread_mutex_lock(&dinner()->global);
+	a = my_time();
+	pthread_mutex_unlock(&dinner()->global);
+	return(a);
+}
+
+void my_sleep(unsigned int time, int action_time)
+{
+	while(get_time() < time + action_time)
 	{
+		if(getter(&dinner()->finish, 1, &dinner()->global))
+			break ;
+		usleep(100);
 		continue ;
 	}
 }
-	
+
+int getter(void *info, int type, pthread_mutex_t *mutex)
+{
+	int a = 0;
+	pthread_mutex_lock(mutex);
+	if(type == 1)
+		a = *(int*)info;
+	else if(type == 2)
+	{
+		a = *(unsigned int*)info;
+	}
+	pthread_mutex_unlock(mutex);
+	return(a);
+}
+
+void setter(void *info,	int value, pthread_mutex_t *mutex)
+{
+	pthread_mutex_lock(mutex);
+	*(int*)info = value;
+	pthread_mutex_unlock(mutex);
+}

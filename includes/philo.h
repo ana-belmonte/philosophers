@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 21:16:34 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/18 22:10:06 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:23:11 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 typedef struct s_fork
 {
 	int				id;
-	int picked;
+	int				picked;
 	pthread_mutex_t	in_use;
 }	t_fork;
 
@@ -33,27 +33,32 @@ typedef struct s_philo
 {
 	pthread_t	philo;
 	int			id;
-	int		eating;
-	int		sleeping;
-	int		thinking;
-	int 		died;
+	// int		eating;
+	// int		sleeping;
+	// int		thinking;
+	// int 		died;
 	int			n_eats;
-	long		last_time_eaten;
+	int			f_all;
+	unsigned int last_time_eaten;
 	t_fork		*right;
 	t_fork		*left;
-
+	int forks_count;
 }	t_philo;
 
 typedef struct s_data
 {
-	long	eat_time;
-	long	die_time;
-	long	sleep_time;
+	unsigned int	eat_time;
+	unsigned int	die_time;
+	unsigned int	sleep_time;
 	int		n_philos;
 	int		n_eats;
-	unsigned int	cur_time;
+	unsigned int	start_time;
 	int		finish;
+	int		start;
+	int flag;
 	pthread_mutex_t global;
+	pthread_mutex_t m_fin;
+	pthread_mutex_t prints;
 	t_philo	*philos;
 	t_fork	*forks;
 }	t_data;
@@ -68,21 +73,21 @@ t_fork	*create_forks(size_t bytes);
 //ACTIONS 
 
 void think(int id);
-void eat(t_philo *philo);
+int eat(t_philo *philo);
 int pick_up_forks(t_philo *philo);
 void sleeping(int id);
 void put_down_forks(t_philo *philo);
-bool check_deaths();
-
-bool died(int id);
+int pick_up_forks2(t_philo *philo);
+int getter(void *info, int type, pthread_mutex_t *mutex);
+void setter(void *info, int value, pthread_mutex_t *mutex);
 
 /// UTILS
 
 long			ft_atol(char *str);
 unsigned int	my_time();
-void my_sleep(unsigned int time, int action_time, t_philo *philo);
+void my_sleep(unsigned int time, int action_time);
 void			error(char *str);
-
+unsigned int get_time();
 /// PARSING 
 
 bool	parse_info(char **av);
@@ -94,5 +99,6 @@ void free_all();
 // routine
 void start();
 
+void check_stop(t_data *data);
 
 #endif

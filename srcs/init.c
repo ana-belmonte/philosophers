@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaires-b <aaires-b@@student.42.fr>         +#+  +:+       +#+        */
+/*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:46:19 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/16 23:29:36 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:16:16 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include <philo.h>
 
 bool	init_data(char **av)
 {
@@ -21,10 +21,11 @@ bool	init_data(char **av)
 	dinner()->eat_time = ft_atol(av[3]);
 	dinner()->die_time = ft_atol(av[2]);
 	dinner()->sleep_time = ft_atol(av[4]);
-	dinner()->cur_time = my_time();
 	dinner()->forks = create_forks(sizeof(t_fork) * dinner()->n_philos);
 	dinner()->philos = create_philos(sizeof(t_philo) * dinner()->n_philos);
 	pthread_mutex_init(&dinner()->global , NULL);
+	//pthread_mutex_init(&dinner()->m_fin , NULL);
+	pthread_mutex_init(&dinner()->prints , NULL);
 	if (!dinner()->philos || !dinner()->forks)
 		return (false);
 	return (true);
@@ -68,6 +69,8 @@ t_philo *create_philos(size_t bytes)
 		philo[i].id = i + 1;
 		philo[i].left = &(dinner()->forks[i]);
 		philo[i].right = &(dinner()->forks[(i + 1) % dinner()->n_philos]);
+		//printf("garfo left : %d\n", philo[i].left->id);
+		//printf("garfo right : %d\n", philo[i].right->id);
 		i++;
 	}
 	return(philo);
