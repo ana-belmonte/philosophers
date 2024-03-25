@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:46:19 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 17:16:16 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:38:05 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_fork *create_forks(size_t bytes)
 	while(i < dinner()->n_philos)
 	{
 		fork[i].id = i + 1;
-		pthread_mutex_init(&(fork[i].in_use), NULL);
+		pthread_mutex_init(&(fork[i].fork), NULL);
 		i++;
 	}
 	return(fork);

@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:33:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 17:30:40 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:42:44 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,15 @@ void routine(t_philo *philo)
 	setter(&philo->last_time_eaten, my_time(), &dinner()->global);
 	if(philo->id % 2 != 0)
 	{
-		usleep(dinner()->n_philos);
+		usleep(1000);
 		//setter(&dinner()->flag, 1, &dinner()->global);
 	}
 	while(!getter(&dinner()->finish, 1, &dinner()->global))
 	{
-		if(pick_up_forks(philo))
+		if(eat(philo))
 		{
-			if(eat(philo))
-			{
-				put_down_forks(philo);
-				sleeping(philo->id);
-				think(philo->id);
-			}
+			sleeping(philo->id);
+			think(philo->id);
 		}
 		usleep(100);
 		//put_down_forks(philo);

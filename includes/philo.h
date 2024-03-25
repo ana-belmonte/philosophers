@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 21:16:34 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 17:23:11 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:37:33 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_fork
 {
 	int				id;
 	int				picked;
-	pthread_mutex_t	in_use;
+	pthread_mutex_t	fork;
 }	t_fork;
 
 typedef struct s_philo

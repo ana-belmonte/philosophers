@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:11:21 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/23 18:46:34 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/25 19:42:58 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void free_mutexes(t_fork *forks)
 	i = 0;
 	while(i < dinner()->n_philos)
 	{
-		pthread_mutex_destroy(&forks[i].in_use);
+		pthread_mutex_destroy(&forks[i].fork);
 		i++;
 	}
 	pthread_mutex_destroy(&dinner()->global);
