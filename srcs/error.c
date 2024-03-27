@@ -6,20 +6,20 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 22:11:21 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 19:42:58 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:33:29 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-static int ft_strlen(char *str)
+static int	ft_strlen(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i++;
-	return(i);
+	return (i);
 }
 
 void	error(char *str)
@@ -27,22 +27,21 @@ void	error(char *str)
 	write(2, str, ft_strlen(str));
 }
 
-void free_mutexes(t_fork *forks)
+void	free_mutexes(t_fork *forks)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(i < dinner()->n_philos)
+	while (i < dinner()->n_philos)
 	{
 		pthread_mutex_destroy(&forks[i].fork);
 		i++;
 	}
-	pthread_mutex_destroy(&dinner()->global);
-	//pthread_mutex_destroy(&dinner()->m_fin);
+	pthread_mutex_destroy(&dinner()->glb);
 	pthread_mutex_destroy(&dinner()->prints);
 }
 
-void free_all()
+void	free_all(void)
 {
 	free_mutexes(dinner()->forks);
 	free(dinner()->forks);

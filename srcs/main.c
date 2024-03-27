@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 21:18:09 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 20:07:12 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:35:50 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	main(int ac, char **av)
 		if (!parse_info(av))
 		{
 			error("Wrong arguments format");
-			return(1);
+			return (1);
 		}
-		if(!init_data(av))
-			return(1);
+		if (!init_data(av))
+			return (1);
 		start(); 
 	}
 	else

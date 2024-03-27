@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:28:24 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 17:49:07 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:58:59 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,53 +65,25 @@ long	ft_atol(char *str)
 	return (a);
 }
 
-unsigned int my_time()
+int	getter(void *info, int type, pthread_mutex_t *mutex)
 {
-	struct timeval time;
-	long long int cur_time;
-	
-	gettimeofday(&time, NULL);
-	cur_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-	return(cur_time);
-}
+	int	a;
 
-unsigned int get_time()
-{
-	int a ;
-	pthread_mutex_lock(&dinner()->global);
-	a = my_time();
-	pthread_mutex_unlock(&dinner()->global);
-	return(a);
-}
-
-void my_sleep(unsigned int time, int action_time)
-{
-	while(get_time() < time + action_time)
-	{
-		if(getter(&dinner()->finish, 1, &dinner()->global))
-			break ;
-		usleep(100);
-		continue ;
-	}
-}
-
-int getter(void *info, int type, pthread_mutex_t *mutex)
-{
-	int a = 0;
+	a = 0;
 	pthread_mutex_lock(mutex);
-	if(type == 1)
-		a = *(int*)info;
-	else if(type == 2)
+	if (type == 1)
+		a = *(int *)info;
+	else if (type == 2)
 	{
-		a = *(unsigned int*)info;
+		a = *(unsigned int *)info;
 	}
 	pthread_mutex_unlock(mutex);
-	return(a);
+	return (a);
 }
 
-void setter(void *info,	int value, pthread_mutex_t *mutex)
+void	setter(void *info,	int value, pthread_mutex_t *mutex)
 {
 	pthread_mutex_lock(mutex);
-	*(int*)info = value;
+	*(int *)info = value;
 	pthread_mutex_unlock(mutex);
 }

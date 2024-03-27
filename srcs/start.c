@@ -6,54 +6,48 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:33:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 19:42:44 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:40:45 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-
-void routine(t_philo *philo)
+void	routine(t_philo *philo)
 {
-	while(!getter(&dinner()->start, 1, &dinner()->global))
- 		continue ;
-	setter(&philo->last_time_eaten, my_time(), &dinner()->global);
-	if(philo->id % 2 != 0)
-	{
+	while (!getter(&dinner()->start, 1, &dinner()->glb))
+		continue ;
+	setter(&philo->lst_eaten, my_time(), &dinner()->glb);
+	if (philo->id % 2 != 0)
 		usleep(1000);
-		//setter(&dinner()->flag, 1, &dinner()->global);
-	}
-	while(!getter(&dinner()->finish, 1, &dinner()->global))
+	while (!getter(&dinner()->finish, 1, &dinner()->glb))
 	{
-		if(eat(philo))
+		if (eat(philo))
 		{
 			sleeping(philo->id);
 			think(philo->id);
 		}
 		usleep(100);
-		//put_down_forks(philo);
 	}
 }
 
-void start()
+void	start(void)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while(i < dinner()->n_philos)
+	while (i < dinner()->n_philos)
 	{
-		//printf("%lu\n", dinner()->philos[i].philo);
-		dinner()->philos[i].last_time_eaten = my_time();
-		pthread_create(&(dinner()->philos[i].philo), NULL, (void*)routine, &dinner()->philos[i]);
+		pthread_create(&(dinner()->philos[i].phl), NULL, 
+			(void *)routine, &dinner()->philos[i]);
 		i++;
 	}
 	dinner()->start_time = my_time();
-	setter(&dinner()->start, 1, &dinner()->global);
+	setter(&dinner()->start, 1, &dinner()->glb);
 	i = 0;
 	check_stop(dinner());
-	while(i < dinner()->n_philos)
+	while (i < dinner()->n_philos)
 	{
-		pthread_join(dinner()->philos[i].philo, NULL);
+		pthread_join(dinner()->philos[i].phl, NULL);
 		i++;
 	}
 	free_all();

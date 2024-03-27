@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:46:19 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/25 19:38:05 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/27 14:35:35 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,17 @@ bool	init_data(char **av)
 	dinner()->sleep_time = ft_atol(av[4]);
 	dinner()->forks = create_forks(sizeof(t_fork) * dinner()->n_philos);
 	dinner()->philos = create_philos(sizeof(t_philo) * dinner()->n_philos);
-	pthread_mutex_init(&dinner()->global , NULL);
-	//pthread_mutex_init(&dinner()->m_fin , NULL);
-	pthread_mutex_init(&dinner()->prints , NULL);
+	pthread_mutex_init(&dinner()->glb, NULL);
+	pthread_mutex_init(&dinner()->prints, NULL);
 	if (!dinner()->philos || !dinner()->forks)
 		return (false);
 	return (true);
 }
 
-t_fork *create_forks(size_t bytes)
+t_fork	*create_forks(size_t bytes)
 {
-	t_fork *fork;
-	int	i;
+	t_fork	*fork;
+	int		i;
 
 	fork = malloc(bytes);
 	if (!fork)
@@ -43,18 +42,18 @@ t_fork *create_forks(size_t bytes)
 		return (NULL);
 	}
 	i = 0;
-	while(i < dinner()->n_philos)
+	while (i < dinner()->n_philos)
 	{
 		fork[i].id = i + 1;
 		pthread_mutex_init(&(fork[i].fork), NULL);
 		i++;
 	}
-	return(fork);
+	return (fork);
 }
 
-t_philo *create_philos(size_t bytes)
+t_philo	*create_philos(size_t bytes)
 {
-	t_philo *philo;
+	t_philo	*philo;
 	int		i;
 
 	philo = malloc(bytes);
@@ -64,14 +63,12 @@ t_philo *create_philos(size_t bytes)
 		return (NULL);
 	}
 	i = 0;
-	while(i < dinner()->n_philos)
+	while (i < dinner()->n_philos)
 	{
 		philo[i].id = i + 1;
 		philo[i].left = &(dinner()->forks[i]);
 		philo[i].right = &(dinner()->forks[(i + 1) % dinner()->n_philos]);
-		//printf("garfo left : %d\n", philo[i].left->id);
-		//printf("garfo right : %d\n", philo[i].right->id);
 		i++;
 	}
-	return(philo);
+	return (philo);
 }
