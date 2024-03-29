@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 21:16:34 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/27 14:54:12 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/29 11:23:45 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void			error(char *str);
 unsigned int	get_time(void);
 int				getter(void *info, int type, pthread_mutex_t *mutex);
 void			setter(void *info, int value, pthread_mutex_t *mutex);
+void			print(char *s, int id);
 
 /// PARSING 
 bool			parse_info(char **av);

@@ -6,13 +6,14 @@
 #    By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/11 21:21:07 by aaires-b          #+#    #+#              #
-#    Updated: 2024/03/25 20:06:37 by aaires-b         ###   ########.fr        #
+#    Updated: 2024/03/29 11:27:47 by aaires-b         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRCSFILES = main.c parse.c utils.c init.c error.c action.c start.c
+SRCSFILES = main.c parse.c utils.c init.c error.c action.c start.c death.c \
+			forks.c time.c 
 OBJDIR = obj/
 SRCSDIR = srcs/
 CC = cc 
@@ -36,22 +37,22 @@ $(OBJDIR)%.o: $(SRCSDIR)%.c | $(OBJDIR)
 	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS)
-	@echo -e "$(GREEN)Compiling object files$(RESET)" 
+	@echo "$(GREEN)Compiling object files $(RESET)" 
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo -e "$(YELLOW)Done$(RESET)"
+	@echo "$(YELLOW)Done $(RESET)"
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
 
 clean:
-	@echo -e "$(CYAN)Cleaning object files$(RESET)"
+	@echo "$(CYAN)Cleaning object files $(RESET)"
 	@rm -rf $(OBJDIR)
-	@echo -e "$(YELLOW)Done$(RESET)"
+	@echo "$(YELLOW)Done $(RESET)"
 
 fclean: clean
-	@echo -e "$(CYAN)Cleaning executable file$(RESET)"
+	@echo "$(CYAN)Cleaning executable file $(RESET)"
 	@rm -f $(NAME)
-	@echo -e "$(YELLOW)Done$(RESET)"
+	@echo "$(YELLOW)Done $(RESET)"
 
 re: fclean all
 
