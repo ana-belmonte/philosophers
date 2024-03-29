@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 19:08:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/27 14:57:33 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:10:43 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	print(char *s, int id)
 {
-	pthread_mutex_lock(&dinner()->prints);
-	printf("%u %d %s\n", (my_time() - dinner()->start_time), id, s);
-	pthread_mutex_unlock(&dinner()->prints);
+	if (!getter(&dinner()->finish, 1, &dinner()->glb))
+	{
+		pthread_mutex_lock(&dinner()->prints);
+		printf("%u %d %s\n", (my_time() - dinner()->start_time), id, s);
+		pthread_mutex_unlock(&dinner()->prints);
+	}
 }
 
 void	think(int id)
@@ -36,7 +39,8 @@ int	eat(t_philo *philo)
 	{
 		lock_forks(philo->id);
 		setter(&philo->n_eats, (philo->n_eats + 1), &dinner()->glb);
-		print("is eating", philo->id);
+		if (!getter(&dinner()->finish, 1, &dinner()->glb))
+			print("is eating", philo->id);
 		a = my_time();
 		setter(&philo->lst_eaten,
 			getter(&a, 2, &dinner()->glb), &dinner()->glb);

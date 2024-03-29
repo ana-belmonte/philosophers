@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 21:16:34 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/29 11:23:45 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:11:19 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ void			free_all(void);
 // routine
 void			start(void);
 void			check_stop(t_data *data);
+void			one_case(t_philo *philo);
 
 #endif

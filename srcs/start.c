@@ -6,17 +6,29 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:33:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/27 14:40:45 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:11:32 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
+
+void	one_case(t_philo *philo)
+{
+	print("has taken a fork", philo->id);
+	if (getter(&dinner()->finish, 1, &dinner()->glb))
+		return ;
+}
 
 void	routine(t_philo *philo)
 {
 	while (!getter(&dinner()->start, 1, &dinner()->glb))
 		continue ;
 	setter(&philo->lst_eaten, my_time(), &dinner()->glb);
+	if (getter(&dinner()->n_philos, 1, &dinner()->glb) == 1)
+	{
+		one_case(philo);
+		return ;
+	}
 	if (philo->id % 2 != 0)
 		usleep(1000);
 	while (!getter(&dinner()->finish, 1, &dinner()->glb))

@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 14:56:54 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/29 11:24:34 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:18:00 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 void	lock_forks(int id)
 {
-	if (getter(&id, 1, &dinner()->glb) % 2 != 0)
+	if (getter(&id, 1, &dinner()->glb) % 2 != 0 
+		&& !getter(&dinner()->finish, 1, &dinner()->glb))
 	{
 		pthread_mutex_lock(&dinner()->philos[id - 1].left->fork);
 		print("has taken a fork", dinner()->philos[id - 1].id);
 		pthread_mutex_lock(&dinner()->philos[id - 1].right->fork);
 		print("has taken a fork", dinner()->philos[id - 1].id);
 	}
-	else
+	else if (!getter(&dinner()->finish, 1, &dinner()->glb))
 	{
 		pthread_mutex_lock(&dinner()->philos[id - 1].right->fork);
 		print("has taken a fork", dinner()->philos[id - 1].id);
