@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:28:24 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/30 13:31:11 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/30 13:41:07 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,9 @@ long	ft_atol(char *str)
 {
 	long	i;
 	long	a;
-	int		len;
 
 	i = 0;
 	a = 0;
-	len = 0;
 	if (!ft_isdigit(str))
 		return (-1);
 	i = ft_isspace(str);
@@ -58,7 +56,6 @@ long	ft_atol(char *str)
 	{
 		a = a * 10 + (str[i] - 48);
 		i++;
-		len++;
 		if (a > INT_MAX)
 			return (-1);
 	}
