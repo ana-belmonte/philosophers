@@ -6,7 +6,7 @@
 /*   By: aaires-b <aaires-b@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 18:33:04 by aaires-b          #+#    #+#             */
-/*   Updated: 2024/03/29 19:11:32 by aaires-b         ###   ########.fr       */
+/*   Updated: 2024/03/30 13:18:20 by aaires-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	routine(t_philo *philo)
 	{
 		if (eat(philo))
 		{
+			if (getter(&philo->n_eats, 1, &dinner()->glb) 
+				== getter(&dinner()->n_eats, 1, &dinner()->glb))
+				return ;
 			sleeping(philo->id);
 			think(philo->id);
 		}
